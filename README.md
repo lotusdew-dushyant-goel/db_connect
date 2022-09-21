@@ -18,10 +18,10 @@ Sets up the table.
 2. 
 ```
   DbConnect.record_trade(%{
-    :user_id => 7,
-    :symbol => "TCS",
-    :price => 1200_00,
-    :quantity => 4200,
+    :user_id => 5,
+    :symbol => "INFY",
+    :price => 3000_00,
+    :quantity => 20,
     :order_type => "B"
   })
 ```
@@ -37,3 +37,4 @@ Lists all records.
 ```
 DbConnect.get_trade(7)
 ```
+Find trade with id 7.

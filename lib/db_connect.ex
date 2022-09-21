@@ -32,7 +32,8 @@ defmodule DbConnect do
 end
 
 defmodule DbConnect.Mnesia do
-  alias Momento
+  alias Memento
+  require Logger
 
   def boot(nodes \\ [node()]) do
     Memento.stop()
@@ -41,7 +42,12 @@ defmodule DbConnect.Mnesia do
   end
 
   def setup!(table, nodes \\ [node()]) do
-    boot(nodes)
-    Memento.Table.create!(table, disc_copies: nodes)
+    Logger.info("connected nodes: #{inspect(Node.list())}")
+
+    node_list = Node.list()
+    boot(node_list)
+
+    # Memento.add_nodes(Node.list())
+    # Memento.Table.create!(table, disc_copies: Node.list())
   end
 end
