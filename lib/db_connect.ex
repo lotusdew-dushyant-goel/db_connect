@@ -35,19 +35,22 @@ defmodule DbConnect.Mnesia do
   alias Memento
   require Logger
 
-  def boot(nodes \\ [node()]) do
-    Memento.stop()
-    Memento.Schema.create(nodes)
-    Memento.start()
-  end
-
   def setup!(table, nodes \\ [node()]) do
+
+    nodes = [node() | Node.list()]
     Logger.info("connected nodes: #{inspect(Node.list())}")
 
-    node_list = Node.list()
-    boot(node_list)
+    # Stop Memento on all nodes
+    :rpc.multicall(nodes, Memento, :stop, [])
 
-    # Memento.add_nodes(Node.list())
-    # Memento.Table.create!(table, disc_copies: Node.list())
+    # Create schema on all nodes
+    Memento.Schema.create(nodes)
+
+    # Start Memento on all nodes
+    :rpc.muticall(nodes, Memento, :start, [])
+
+    # Create ram copies on all node
+    Memento.Table.create!(table, disc_copies: nodes)
   end
+
 end

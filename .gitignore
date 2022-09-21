@@ -27,3 +27,4 @@ db_connect-*.tar
 
 # Mnesia
 .mnesia
+lib/db_connect/dummy_orders.ex
